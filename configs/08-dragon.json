@@ -1,0 +1,13 @@
+{
+  "name": "Dragon curve",
+  "axiom": "FX",
+  "rules": {
+    "X": "X+YF+",
+    "Y": "-FX-Y"
+  },
+  "angle": 90,
+  "length": 5,
+  "heading": 0,
+  "generation": 10,
+  "source": "Eric W. Weisstein, Dragon Curve, Wolfram MathWorld, https://mathworld.wolfram.com/DragonCurve.html"
+}

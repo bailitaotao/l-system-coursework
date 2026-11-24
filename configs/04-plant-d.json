@@ -1,0 +1,13 @@
+{
+  "name": "Plant D",
+  "axiom": "X",
+  "rules": {
+    "X": "F[+X]F[-X]+X",
+    "F": "FF"
+  },
+  "angle": 20,
+  "length": 5,
+  "heading": 90,
+  "generation": 7,
+  "source": "Goldsmiths CW1, Fig. 1; Prusinkiewicz & Lindenmayer, The Algorithmic Beauty of Plants, Fig. 1.24d"
+}
