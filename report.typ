@@ -52,6 +52,7 @@
 #cover-field[Programme][#programme]
 #cover-field[Module][#module-name]
 #cover-field[Submission date][#submission-date]
+#cover-field[GitHub repository][#link("https://github.com/bailitaotao/l-system-coursework")[github.com/bailitaotao/l-system-coursework]]
 
 #pagebreak()
 
