@@ -75,9 +75,23 @@ Each preset is a small JSON document @json-doc. It contains the initial word, th
 
 A production describes the next generation of a symbol. In Plant A the initial word is F. Its one production gives five occurrences of F interspersed with turns and brackets. The program reads the whole old word in order and looks up each symbol in the rule dictionary. It collects the pieces and joins them into a new string. Only after that pass can a newly produced F take part in another replacement. A symbol with no rule passes through unchanged. This preserves the brackets inserted in early generations as the structures inside them become longer @plants.
 
+This repeated substitution is the first mathematical idea in the project. If $omega_n$ is the complete instruction word at generation $n$, and $h$ means “replace each symbol using the production rules”, then the generations are defined by
+
+$ omega_0 = "F", quad omega_(n+1) = h(omega_n). $
+
+For Plant A, each F produces five new F symbols. Since turns and brackets produce no F symbols, the number of drawable steps obeys $N_0 = 1$ and $N_(n+1) = 5 N_n$, giving $N_n = 5^n$. At generation five this predicts $5^5 = 3,125$ line segments. This count is a useful check, but it does not specify where the branches appear; their order and the turtle's state determine the shape.
+
 The drawing pass starts at the origin with an initial heading. F advances one step in that direction and records a segment between the old and new positions. The horizontal displacement is the step length multiplied by the cosine of the heading, and the vertical displacement uses the sine. The interface displays degrees, and the interpreter converts to radians for these calculations. A plus sign adds the turn angle and a minus sign subtracts it. The final projection reverses the vertical direction so that a heading of ninety degrees appears upwards on the screen.
 
+The second mathematical idea is to interpret the word as a sequence of transformations of a turtle state. Write its position as $(x_k,y_k)$, its heading in radians as $theta_k$, its step length as $L$, and its displayed turn angle as $alpha$ degrees. First convert the turn to radians, $delta = alpha pi / 180$. For each F, the next point is
+
+$ x_(k+1) = x_k + L cos(theta_k), quad y_(k+1) = y_k + L sin(theta_k). $
+
+For a turn, the heading changes by $theta_(k+1) = theta_k + delta$ for + and $theta_(k+1) = theta_k - delta$ for -. These equations are exactly the coordinate updates used by the interpreter. The screen drawing negates the vertical coordinate at projection time, because screen pixels increase downwards.
+
 The bracketed part of the first rule provides a small test of the interpreter. Immediately after its first forward step, the opening bracket saves the current position and direction. The turtle turns left and draws one line. The closing bracket restores both saved values without leaving a mark. The next forward command therefore continues up the original stem. Saving only the position would produce the correct starting point but the wrong direction for that stem. A stack also handles nested branches because the inner branch returns to its own fork before the outer branch resumes. The same instructions are sufficient for all six plant specimens.
+
+In state notation, an opening bracket pushes the current triple $(x,y,theta)$ onto a last-in, first-out stack; the matching closing bracket pops that triple back into the active state. The current path is therefore restored to the exact fork point and heading. Nested brackets work because the most recent saved state is restored first. This is the key implementation detail behind branching: the turtle does not need to find a branch start geometrically; it remembers it when it encounters an opening bracket.
 
 #plate("01-plant-a.png", 107mm,
   "An upright branching stem with progressively finer side shoots.",
